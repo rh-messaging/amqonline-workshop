@@ -205,7 +205,7 @@ The `iot/spark-driver` directory provides the Spark Streaming driver application
 1. Build the spark driver:
 
     ```
-    cd enmasse-workshop-rhsummit18/iot/spark-driver
+    cd amqonline-workshop-rhsummit18/iot/spark-driver
     mvn clean package fabric8:resource fabric8:build fabric8:deploy -Dspark.master.host=spark-master.<user>.svc
     ```
 
