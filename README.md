@@ -1,12 +1,12 @@
-# EnMasse Workshop
+# AMQ Online Workshop
 
-In this workshop you will deploy messaging based on [EnMasse](http://enmasse.io/), [Apache Spark](https://spark.apache.org/) and an IoT sensors simulator. You will learn how to provision messaging infrastructure to connect all components in an end 2 end IoT application.
+In this workshop you will deploy messaging based on [AMQ Online](https://www.redhat.com/en/explore/amq-online), [Apache Spark](https://spark.apache.org/) and an IoT sensors simulator. You will learn how to provision messaging infrastructure to connect all components in an end 2 end IoT application.
 
 ## Prerequisites
 
-*NOTE* An OpenShift cluster with EnMasse has been set up at [https://openshift.amqonlineworkshop.com:8443/](https://openshift.amqonlineworkshop.com:8443/). Login credentials will be handed out by the presenters.
+*NOTE* An OpenShift cluster with AMQ Online has been set up at [https://openshift.amqonlineworkshop.com:8443/](https://openshift.amqonlineworkshop.com:8443/). Login credentials will be handed out by the presenters.
 
-To build the java code, you need [Maven](https://maven.apache.org/) already installed on the machine.  If you don't have that, there is the [official installation guide](https://maven.apache.org/install.html) for doing that. Finally, the [OpenShift](https://github.com/openshift/origin/releases/tag/v3.9.0) client tools is used for several operations. Follow [this guide](https://github.com/EnMasseProject/enmasse-workshop#getting-oc-tools) on how to install it if you don't have it installed yet.
+To build the java code, you need [Maven](https://maven.apache.org/) already installed on the machine.  If you don't have that, there is the [official installation guide](https://maven.apache.org/install.html) for doing that. Finally, the [OpenShift](https://github.com/openshift/origin/releases/tag/v3.9.0) client tools is used for several operations. Follow [this guide](https://github.com/rh-messaging/amqonline-workshop#getting-oc-tools) on how to install it if you don't have it installed yet.
 
 Finally, internet connection is needed!
 
@@ -14,7 +14,7 @@ Finally, internet connection is needed!
 
 In this workshop we will be working with 5 different components:
 
-* An EnMasse messaging service
+* An AMQ Online messaging service
 * A Spark application containing the analytics code
 * A Thermostat application performing command & control of devices
 * One or more IoT device simulators
@@ -27,7 +27,7 @@ deployed to OpenShift from your laptop, and the device IoT simulator will be run
 
 ## Downloading the tutorial files
 
-The easiest way to use this tutorial is to [download](https://github.com/EnMasseProject/enmasse-workshop/archive/rhsummit18.zip) the zip and and unzip the archive on your laptop.
+The easiest way to use this tutorial is to [download](https://github.com/rh-messaging/amqonline-workshop/archive/rhsummit18.zip) the zip and and unzip the archive on your laptop.
 
 ## IoT Application
 
@@ -48,7 +48,7 @@ This project will be used to deploy the IoT application.
 
 We now provision messaging infrastructure to use with the application.
 
-1. In the OpenShift Service Catalog overview, select the "EnMasse (standard)" service:
+1. In the OpenShift Service Catalog overview, select the "AMQ Online (standard)" service:
 
     ![Provision1](images/messagingprovision1.png)
 
@@ -72,11 +72,11 @@ Once the provisioning is complete you should be able to see the dashboard link w
 
 ![Provision6](images/messagingprovision6.png)
 
-But first, and introduction to some EnMasse concepts.
+But first, and introduction to some AMQ Online concepts.
 
 ### Address spaces and addresses
 
-In EnMasse, you have the concepts of address spaces and addresses. When you provision a messaging
+In AMQ Online, you have the concepts of address spaces and addresses. When you provision a messaging
 service like above, you effectively create an address space.
 
 An address space is a group of addresses that can be accessed through a single connection (per
@@ -186,10 +186,10 @@ The spark application is composed of 2 parts:
     oc project <user>
     ```
 
-1. Deploy the cluster using the [template](https://github.com/EnMasseProject/enmasse-workshop/blob/master/spark/cluster-template.yaml) provided in this tutorial:
+1. Deploy the cluster using the [template](https://github.com/rh-messaging/amqonline-workshop/blob/rhsummit18/spark/cluster-template.yaml) provided in this tutorial:
 
     ```
-    cd enmasse-workshop-rhsummit18/spark
+    cd amqonline-workshop-rhsummit18/spark
     oc process -f cluster-template.yaml MASTER_NAME=spark-master | oc create -f -
     ```
 
@@ -254,7 +254,7 @@ The thermostat application uses the [fabric8-maven-plugin](https://github.com/fa
 1. Build the application as a Docker image and deploy it to the OpenShift cluster:
 
     ```
-    cd enmasse-workshop-rhsummit18/iot/thermostat
+    cd amqonline-workshop-rhsummit18/iot/thermostat
     mvn package fabric8:resource fabric8:build fabric8:deploy -Dfabric8.mode=openshift
     ```
     You can see the builds by going to the builds menu again:
@@ -304,16 +304,16 @@ The Heating device application :
 
 The console application can be configured using a `device.properties` file which provides following parameters :
 
-* _service.hostname_ : hostname of the EnMasse messaging/mqtt service to connect (for AMQP or MQTT)
-* _service.port_ : port of the EnMasse messaging service to connect
+* _service.hostname_ : hostname of the AMQ Online messaging/mqtt service to connect (for AMQP or MQTT)
+* _service.port_ : port of the AMQ Online messaging service to connect
 * _service.temperature.address_ : address on which temperature values will be sent (should not be changed from the _temperature_ value)
 * _service.control.prefix_ : prefix for defining the control address for receiving command (should not be changed from the _control_ value)
 * _device.id_ : device identifier
-* _device.username_ : device username (from binding) for EnMasse authentication
-* _device.password_ : device password (from binding) for EnMasse authentication
+* _device.username_ : device username (from binding) for AMQ Online authentication
+* _device.password_ : device password (from binding) for AMQ Online authentication
 * _device.update.interval_ : periodic interval for sending temperature values
 * _device.transport.class_ : transport class to use in terms of protocol. Possible values are _io.enmasse.iot.transport.AmqpClient_ for AMQP and _io.enmasse.iot.transport.MqttClient_ for MQTT
-* _device.transport.ssl.servercert_ : server certificate file path for accessing EnMasse using a TLS connection
+* _device.transport.ssl.servercert_ : server certificate file path for accessing AMQ Online using a TLS connection
 * _device.dht22.temperature.min_ : minimum temperature provided by the simulated DHT22 sensor
 * _device.dht22.temperature.max_ : maximum temperature provided by the simulated DHT22 sensor
 
@@ -327,7 +327,11 @@ The console application can be configured using a `device.properties` file which
 to send to the temperature address. Most importantly, we want to get hold of the external hostnames
 that the device can connect to.
 
+<<<<<<< HEAD
     *NOTE* However, use '\*' and '\*' for both `sendAddresses` and `recvAddresses`, as there is a known limitation around authorization and MQTT in EnMasse.
+=======
+    *NOTE* However, use '*' and '*' for both `sendAddresses` and `recvAddresses`, as there is a known limitation around authorization and MQTT in AMQ Online.
+>>>>>>> Change names to AMQ Online
 
     Make sure 'externalAccess' is set:
 
@@ -395,7 +399,7 @@ If you go to your messaging console, you should see the different clients connec
 In order to run the `HeatingDevice` application you can use the Maven `exec` plugin with the following command from the `clients` directory.
 
 ```
-cd enmasse-workshop-rhsummit18/iot/clients
+cd amqonline-workshop-rhsummit18/iot/clients
 mvn package
 mvn exec:java -Dexec.mainClass=io.enmasse.iot.device.impl.HeatingDevice -Dexec.args=<path-to-device-properties-file>
 ```
