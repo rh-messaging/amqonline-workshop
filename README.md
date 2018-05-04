@@ -70,7 +70,8 @@ We now provision messaging infrastructure to use with the application.
 
 Once the provisioning is complete you should be able to see the dashboard link which we will later use to access the messaging console and create the addresses we need for the workshop.
 
-![Provision6](images/messagingprovision6.png)
+![Provision61](images/messagingprovision6_1.png)
+![Provision62](images/messagingprovision6_2.png)
 
 But first, and introduction to some AMQ Online concepts.
 
@@ -104,7 +105,7 @@ In the 'standard' address space, we have 4 types of addresses.
 
 1. Click on the dashboard link to get to the messaging console:
 
-    ![Provision6](images/messagingprovision6.png)
+    ![Provision63](images/messagingprovision6_3.png)
 
     You will be redirected to a login screen.
 
