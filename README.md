@@ -68,10 +68,13 @@ We now provision messaging infrastructure to use with the application.
 
     ![Provision5](images/messagingprovision5.png)
 
-Once the provisioning is complete you should be able to see the dashboard link which we will later use to access the messaging console and create the addresses we need for the workshop.
+The provisioning may take some time and the provisioned service will be marked as not ready to begin with.
 
 ![Provision61](images/messagingprovision6_1.png)
-![Provision62](images/messagingprovision6_2.png)
+
+Once the provisioning is complete you should be able to see the dashboard link which we will later use to access the messaging console and create the addresses we need for the workshop.
+
+![Provision62](images/messagingprovision6_3.png)
 
 But first, and introduction to some AMQ Online concepts.
 
