@@ -72,7 +72,7 @@ The provisioning may take some time and the provisioned service will be marked a
 
 ![Provision61](images/messagingprovision6_1.png)
 
-Once the provisioning is complete you should be able to see the dashboard link which we will later use to access the messaging console and create the addresses we need for the workshop.
+Once the provisioning is complete you should be able to see the dashboard link (when the service is not 'expanded') which we will later use to access the messaging console and create the addresses we need for the workshop.
 
 ![Provision62](images/messagingprovision6_3.png)
 
