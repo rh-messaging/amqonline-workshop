@@ -11,6 +11,8 @@ spec:
   strategy:
     rollingParams:
       timeoutSeconds: 10800
+      updatePeriodSeconds: 10
+      intervalSeconds: 10
     type: Rolling
   template:
     metadata:
