@@ -194,7 +194,8 @@ The spark application is composed of 2 parts:
 
     ```
     cd amqonline-workshop-rhsummit18/spark
-    oc process -f cluster-template.yaml MASTER_NAME=spark-master | oc create -f -
+    oc process -f cluster-template.yaml MASTER_NAME=spark-master > cluster.yaml
+    oc create -f cluster.yaml
     ```
 
     This will deploy the spark cluster which may take a while. In your project overview you should see
@@ -212,7 +213,8 @@ In this workshop, however, we will use a pre-built image to save some time downl
 
     ```
     cd amqonline-workshop-rhsummit18/iot/spark-driver
-    oc process -f spark-driver-template.yaml SPARK_MASTER_HOST=spark-master.<user>.svc
+    oc process -f spark-driver-template.yaml SPARK_MASTER_HOST=spark-master.<user>.svc > driver.yaml
+    oc create -f driver.yaml
     ```
 
     Once the driver has been deployed, you should see it in the project overview:
