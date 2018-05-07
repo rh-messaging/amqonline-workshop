@@ -334,8 +334,8 @@ The console application can be configured using a `device.properties` file which
 
 In this workshop, we provide 2 examples that you can edit:
 
-* AMQP: `amqonline-workshop-rhsummit18/iot/clients/src/main/resources/device-amqp.properties
-* MQTT: `amqonline-workshop-rhsummit18/iot/clients/src/main/resources/device-mqtt.properties
+* AMQP: `amqonline-workshop-rhsummit18/iot/clients/src/main/resources/device-amqp.properties`
+* MQTT: `amqonline-workshop-rhsummit18/iot/clients/src/main/resources/device-mqtt.properties`
 
 #### Configuring device
 
