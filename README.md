@@ -206,20 +206,26 @@ The spark application is composed of 2 parts:
 
 The `iot/spark-driver` directory provides the Spark Streaming driver application and a Docker image for running the related Spark driver inside the cluster. The spark-driver is deployed by building and running it on the OpenShift cluster.  The spark-driver uses the [fabric8-maven-plugin](https://github.com/fabric8io/fabric8-maven-plugin) to create a docker image, an OpenShift deployment config, and deploy the spark-driver into OpenShift.
 
-1. Build the spark driver:
+In this workshop, however, we will use a pre-built image to save some time downloading the maven dependencies.
+
+1. Deploy the spark driver:
 
     ```
     cd amqonline-workshop-rhsummit18/iot/spark-driver
-    mvn clean package fabric8:resource fabric8:build fabric8:deploy -Dspark.master.host=spark-master.<user>.svc
+    oc process -f spark-driver-template.yaml SPARK_MASTER_HOST=spark-master.<user>.svc
     ```
-
-    This command will package the application and build a Docker image deployed to OpenShift. You can watch the status by looking at the build:
-
-    ![Spark2](images/spark2.png)
 
     Once the driver has been deployed, you should see it in the project overview:
 
     ![Spark3](images/spark3.png)
+
+    Alternatively, if your network connection is good, you can run the following command to build the image using fabric8 maven plugin:
+
+    ```
+    mvn clean package fabric8:resource fabric8:build fabric8:deploy -Dspark.master.host=spark-master.<user>.svc
+    ```
+
+    This command will package the application and build a Docker image deployed to OpenShift. 
 
 1. We now need to create a binding with the permissions we defined above. Click on "Create binding" to open the dialog to create a binding:
 
@@ -255,19 +261,23 @@ The spark-driver will now redeploy and read the credentials from the binding.
 
 The thermostat application uses the [fabric8-maven-plugin](https://github.com/fabric8io/fabric8-maven-plugin) to create a docker image, an OpenShift deployment config, and deploy the thermostat into OpenShift.
 
-1. Build the application as a Docker image and deploy it to the OpenShift cluster:
+In this workshop, however, we will use a pre-built image to save some time downloading the maven dependencies.
+
+1. Deploy the thermostat:
 
     ```
     cd amqonline-workshop-rhsummit18/iot/thermostat
-    mvn package fabric8:resource fabric8:build fabric8:deploy -Dfabric8.mode=openshift
+    oc create -f thermostat-deploymentconfig.yaml
     ```
-    You can see the builds by going to the builds menu again:
-
-    ![Thermostat1](images/thermostat1.png)
-
     Eventually, the thermostat is deployed:
 
     ![Thermostat2](images/thermostat2.png)
+
+    Alternatively, if your network connection is good, you can run the following command to build the image using fabric8 maven plugin:
+
+    ```
+    mvn package fabric8:resource fabric8:build fabric8:deploy -Dfabric8.mode=openshift
+    ```
 
     Once the thermostat has been deployed, we need to create a binding with the permissions we defined above. 
 
@@ -301,7 +311,8 @@ The thermostat will now redeploy and read the credentials from the binding:
 
 Heating simulated devices are provided for simulating data sent to the IoT system and receiving messages.
 The devices supports two protocols, AMQP and MQTT, which are configurable.
-The Heating device application :
+
+The Heating device:
 
 * get temperature values from a simulated DHT22 temperature sensor sending them to the _temperature_ address periodically
 * receive commands for opening/closing a simulated valve on the _control/$device-id_ address
@@ -320,6 +331,11 @@ The console application can be configured using a `device.properties` file which
 * _device.transport.ssl.servercert_ : server certificate file path for accessing AMQ Online using a TLS connection
 * _device.dht22.temperature.min_ : minimum temperature provided by the simulated DHT22 sensor
 * _device.dht22.temperature.max_ : maximum temperature provided by the simulated DHT22 sensor
+
+In this workshop, we provide 2 examples that you can edit:
+
+* AMQP: `amqonline-workshop-rhsummit18/iot/clients/src/main/resources/device-amqp.properties
+* MQTT: `amqonline-workshop-rhsummit18/iot/clients/src/main/resources/device-mqtt.properties
 
 #### Configuring device
 
@@ -356,21 +372,22 @@ that the device can connect to.
 
     ![Device6](images/device6.png)
 
-An example final configuration:
+An example final configuration (*NOTE* these values must be changed to the values from the binding):
 
 ```
-# service related configuration
-service.hostname=messaging-enmasse-user1.192.168.1.220.nip.io
+service.hostname=messaging-enmasse-user1.apps.amqonlineworkshop.com
+device.username=user-13a5b03a-e256-4b6e-9fbd-e182ef306f98
+device.password=DQ7TVRjzGqjzw4o5Bz/KtQFe9HY0d4g6iZYGdpC8iPQ=
+device.transport.ssl.servercert=server.pem
+
+# Other configuration
 service.port=443
 service.temperature.address=temperature
 service.control.prefix=control
 # device specific configuration
 device.id=device1
-device.username=user-8fc43b14-98ab-4f70-940b-2fcbb681bdf7
-device.password=qpNWm/zEc+H5V5oadG9jh7WwkySZXRTOEDy/MtgqrlQ=
 device.update.interval=1000
 device.transport.class=io.enmasse.iot.transport.AmqpClient
-device.transport.ssl.servercert=messagingCert.pem
 # device sensors specific configuration
 device.dht22.temperature.min=20
 device.dht22.temperature.max=30

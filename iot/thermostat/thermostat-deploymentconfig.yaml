@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  name: thermostat
+  labels:
+    app: thermostat
+spec:
+  replicas: 1
+  selector:
+    app: thermostat
+  strategy:
+    rollingParams:
+      timeoutSeconds: 10800
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        app: thermostat 
+    spec:
+      containers:
+      - image: lulf/thermostat:1.0
+        imagePullPolicy: IfNotPresent
+        name: thermostat

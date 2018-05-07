@@ -1,0 +1,40 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: spark-driver-template
+objects:
+  - apiVersion: v1
+    kind: DeploymentConfig
+    metadata:
+      name: spark-driver
+      labels:
+        app: spark-driver
+    spec:
+      replicas: 1
+      selector:
+        app: spark-driver
+      strategy:
+        rollingParams:
+          timeoutSeconds: 10800
+        type: Rolling
+      template:
+        metadata:
+          labels:
+            app: spark-driver
+        spec:
+          containers:
+          - env:
+            - name: SPARK_MASTER_HOST
+              value: "${{SPARK_MASTER_HOST}}"
+            - name: SPARK_MASTER_PORT
+              value: "${SPARK_MASTER_PORT}"
+            image: lulf/spark-driver:1.0
+            imagePullPolicy: IfNotPresent
+            name: spark-driver
+parameters:
+  - name: SPARK_MASTER_HOST
+    description: Hostname of spark service
+    required: true
+  - name: SPARK_MASTER_PORT
+    description: Port of spark service
+    value: "7077"
